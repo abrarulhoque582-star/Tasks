@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrar's Daily Routine Manager</title>
+    <!-- Tailwind CSS for Premium UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a, #020617);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- Top Navigation / Header -->
+    <header class="w-full max-w-5xl mx-auto px-6 pt-8 pb-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Command Center
+            </h1>
+            <p id="current-date" class="text-sm text-slate-400 font-medium mt-1">Loading today's date...</p>
+        </div>
+        
+        <!-- Metrics Panel (Clock & Day Countdown) -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+            <!-- Day Countdown Widget -->
+            <div class="glass-card px-4 py-2 rounded-full flex items-center gap-2 shadow-lg shadow-amber-950/20 border border-amber-500/20 bg-amber-500/5">
+                <i data-lucide="hourglass" class="w-4 h-4 text-amber-400 animate-spin" style="animation-duration: 3s;"></i>
+                <span class="text-xs font-semibold uppercase tracking-wider text-amber-400/80">Remaining:</span>
+                <span id="day-countdown" class="text-sm font-mono font-bold tracking-wider text-amber-300">00h 00m 00s</span>
+            </div>
+
+            <!-- Standard Clock -->
+            <div class="glass-card px-4 py-2 rounded-full flex items-center gap-2 shadow-lg shadow-indigo-950/20">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="current-time" class="text-sm font-mono tracking-wider text-slate-300">00:00:00 AM</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="w-full max-w-5xl mx-auto px-6 py-6 flex-1 grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Left Column: Everyday Core Routine -->
+        <section class="md:col-span-2 space-y-6">
+            <div class="glass-card rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-700/50 pb-4 mb-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="calendar-check" class="text-indigo-400 w-6 h-6"></i>
+                        <h2 class="text-xl font-semibold text-slate-200">Today's Routine</h2>
+                    </div>
+                    <span id="day-badge" class="text-xs font-bold uppercase tracking-widest bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full border border-indigo-500/30">
+                        ...
+                    </span>
+                </div>
+
+                <!-- Dynamic Tasks Container -->
+                <div id="routine-tasks-container" class="space-y-3">
+                    <!-- Javascript will inject tasks here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Weekly Strategy & Reminders -->
+        <section class="space-y-6">
+            <!-- Weekly Goals -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl"></div>
+                
+                <div class="flex items-center gap-3 border-b border-slate-700/50 pb-4 mb-4">
+                    <i data-lucide="target" class="text-purple-400 w-6 h-6"></i>
+                    <h2 class="text-xl font-semibold text-slate-200">Weekly Goals</h2>
+                </div>
+                <p class="text-xs text-slate-400 mb-4 italic">Fit these strategically into your Free Time blocks:</p>
+                
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 cursor-pointer hover:bg-slate-800/60 transition">
+                        <input type="checkbox" class="mt-1 w-4 h-4 rounded border-slate-600 text-purple-500 focus:ring-purple-500/30 bg-slate-900">
+                        <div>
+                            <span class="text-sm font-medium text-slate-300">Assignment</span>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 cursor-pointer hover:bg-slate-800/60 transition">
+                        <input type="checkbox" class="mt-1 w-4 h-4 rounded border-slate-600 text-purple-500 focus:ring-purple-500/30 bg-slate-900">
+                        <div>
+                            <span class="text-sm font-medium text-slate-300">Revision</span>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 cursor-pointer hover:bg-slate-800/60 transition">
+                        <input type="checkbox" class="mt-1 w-4 h-4 rounded border-slate-600 text-purple-500 focus:ring-purple-500/30 bg-slate-900">
+                        <div>
+                            <span class="text-sm font-medium text-slate-300">Research</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Context System Quick Info -->
+            <div class="glass-card rounded-2xl p-5 border-l-4 border-amber-500/50 bg-amber-500/5">
+                <div class="flex gap-3">
+                    <i data-lucide="info" class="text-amber-400 w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <h4 class="text-sm font-semibold text-amber-300">Auto-Reset Engine</h4>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">This page dynamically generates tasks based on your local system clock. Coming back tomorrow will seamlessly update your Nightly blocks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer with Credits -->
+    <footer class="w-full max-w-5xl mx-auto px-6 py-6 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p>&copy; 2026 Personal Dashboard. All rights reserved.</p>
+        <p class="font-medium tracking-wide text-slate-400 bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-700/50">
+            ❝ Built by Abrar❞
+        </p>
+    </footer>
+
+    <!-- Application Script Logic -->
+    <script>
+        // Schedule Config Matrix
+        const baseRoutine = [
+            { id: 'm1', time: '05:00 AM – 07:00 AM', desc: 'Quran + DIC + Workout', type: 'core' },
+            { id: 'm2', time: '07:00 AM – 03:00 PM', desc: 'Varsity Routine', type: 'core' },
+            { id: 'm3', time: '03:00 PM – 06:00 PM', desc: 'Rest / Code / Practice on IELTS prep + Side hustle', type: 'core' }
+        ];
+
+        const nightlySchedules = {
+            'Sunday': [
+                { id: 'n1', time: '07:00 PM – 09:00 PM', desc: '2 hours Programme Practice', type: 'night' },
+                { id: 'n2', time: '09:00 PM – 10:00 PM', desc: '1 hour Bangla', type: 'night' },
+                { id: 'n3', time: '10:00 PM – 12:00 AM', desc: 'Remaining Time: Free Time', type: 'free' }
+            ],
+            'Monday': [
+                { id: 'n1', time: '07:00 PM – 09:00 PM', desc: '2 hours DIC + EEE', type: 'night' },
+                { id: 'n2', time: '09:00 PM – 12:00 AM', desc: 'Remaining Time: Free Time', type: 'free' }
+            ],
+            'Tuesday': [
+                { id: 'n1', time: '07:00 PM – 09:00 PM', desc: 'Programming Fundamentals', type: 'night' },
+                { id: 'n2', time: '09:00 PM – 10:00 PM', desc: '1 hour English', type: 'night' },
+                { id: 'n3', time: '10:00 PM – 12:00 AM', desc: 'Remaining Time: Free Time', type: 'free' }
+            ],
+            'Wednesday': [
+                { id: 'n1', time: '07:00 PM – 09:00 PM', desc: '2 hours DIC + 1 hour Mechanical Drawing', type: 'night' },
+                { id: 'n2', time: '09:00 PM – 12:00 AM', desc: 'Remaining Time: Free Time', type: 'free' }
+            ],
+            'Thursday': [
+                { id: 'n1', time: '07:00 PM – 12:00 AM', desc: 'Free Time / Catch-up Block', type: 'free' }
+            ],
+            'Friday': [
+                { id: 'n1', time: '07:00 PM – 09:00 PM', desc: '2 hours Dic + 1 hour Mechanical Drawing', type: 'night' },
+                { id: 'n2', time: '09:00 PM – 12:00 AM', desc: 'Remaining Time: Free Time', type: 'free' }
+            ],
+            'Saturday': [
+                { id: 'n1', time: '07:00 PM – 09:00 PM', desc: '2 hours Programming Fundamentals', type: 'night' },
+                { id: 'n2', time: '09:00 PM – 11:00 PM', desc: '2 hours CFE or DIC', type: 'night' },
+                { id: 'n3', time: '11:00 PM – 12:00 AM', desc: 'Remaining Time: Free Time', type: 'free' }
+            ]
+        };
+
+        const nightCloseRoutine = [
+            { id: 'm4', time: '12:00 AM – 01:00 AM', desc: '1 hour Workout Session', type: 'core' }
+        ];
+
+        // Tracker Configuration State variables
+        let systemDayString = "";
+
+        function clockTicker() {
+            const now = new Date();
+            
+            // Format Time display
+            document.getElementById('current-time').innerText = now.toLocaleTimeString('en-US', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+            });
+
+            // Format Calendar display
+            document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+            // Day Countdown Calculation Engine (Time left until midnight)
+            const hoursLeft = 23 - now.getHours();
+            const minutesLeft = 59 - now.getMinutes();
+            const secondsLeft = 59 - now.getSeconds();
+
+            // Pad numbers below 10 with a leading zero for UI structure
+            const hDisplay = hoursLeft.toString().padStart(2, '0');
+            const mDisplay = minutesLeft.toString().padStart(2, '0');
+            const sDisplay = secondsLeft.toString().padStart(2, '0');
+
+            document.getElementById('day-countdown').innerText = `${hDisplay}h ${mDisplay}m ${sDisplay}s`;
+
+            // Day reset verification engine
+            const currentDayStr = now.toLocaleDateString('en-US', { weekday: 'long' });
+            if (systemDayString !== currentDayStr) {
+                systemDayString = currentDayStr;
+                renderScheduleDashboard(systemDayString);
+            }
+        }
+
+        function renderScheduleDashboard(dayName) {
+            document.getElementById('day-badge').innerText = dayName;
+            const container = document.getElementById('routine-tasks-container');
+            container.innerHTML = ""; // Flush template elements
+            
+            // Combine items seamlessly based on requested day blocks
+            const dailyNightTrack = nightlySchedules[dayName] || [];
+            const completeMasterRoutine = [...baseRoutine, ...dailyNightTrack, ...nightCloseRoutine];
+
+            completeMasterRoutine.forEach((task) => {
+                let dynamicBorderColor = "border-slate-700/40";
+                let typeIndicatorLabel = "Routine";
+                let badgeClass = "bg-slate-500/10 text-slate-400 border-slate-500/20";
+
+                if(task.type === 'night') {
+                    dynamicBorderColor = "border-indigo-500/30";
+                    typeIndicatorLabel = "Focus Block";
+                    badgeClass = "bg-indigo-500/10 text-indigo-300 border-indigo-500/20";
+                } else if(task.type === 'free') {
+                    dynamicBorderColor = "border-emerald-500/30";
+                    typeIndicatorLabel = "Flex Time";
+                    badgeClass = "bg-emerald-500/10 text-emerald-300 border-emerald-500/20";
+                }
+
+                const taskElement = document.createElement('div');
+                taskElement.className = `flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-slate-800/30 border ${dynamicBorderColor} hover:bg-slate-800/50 transition duration-200 group`;
+                
+                taskElement.innerHTML = `
+                    <div class="flex items-start gap-3.5">
+                        <div class="mt-1 relative flex items-center justify-center">
+                            <input type="checkbox" id="${task.id}-${dayName}" class="w-5 h-5 rounded-md border-slate-600 text-indigo-500 focus:ring-indigo-500/30 bg-slate-900 cursor-pointer transition">
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold tracking-wide text-slate-400 group-hover:text-indigo-300 transition">${task.time}</p>
+                            <p class="text-base text-slate-200 font-medium mt-0.5">${task.desc}</p>
+                        </div>
+                    </div>
+                    <div class="self-end sm:self-center">
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${badgeClass}">
+                            ${typeIndicatorLabel}
+                        </span>
+                    </div>
+                `;
+                container.appendChild(taskElement);
+            });
+        }
+
+        // Initialize Engine
+        setInterval(clockTicker, 1000);
+        clockTicker();
+        lucide.createIcons();
+    </script>
+</body>
+</html>
